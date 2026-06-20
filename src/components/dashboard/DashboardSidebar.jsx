@@ -54,10 +54,7 @@ const DashboardSideBar = () => {
   bg-slate-900 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border-r border-white/5`}
       >
         <div className="h-full flex flex-col">
-          <div className="px-6 py-5 border-b border-white/5 flex justify-between items-center">
-            {/* <span className="font-bold">Logo</span> */}
-            <ThemeToggle />
-          </div>
+        
           
           {/* logo hobe  */}
           <div className="px-6 py-5 border-b border-white/5">
