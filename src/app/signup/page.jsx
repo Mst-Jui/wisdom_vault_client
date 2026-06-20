@@ -11,6 +11,9 @@ import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 
+
+
+
 const SignUpPage = () => {
   const [imageUrl, setImageUrl] = useState("");
   const fileRef = useRef(null);

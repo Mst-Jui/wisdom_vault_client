@@ -95,7 +95,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <NavLink href="/products">Browse Products
+              <NavLink href="/lessons">Explore
               </NavLink>
             </li>
 
@@ -203,8 +203,8 @@ const Navbar = () => {
               </li>
 
               <li>
-                <NavLink href="/products" className="block py-2">
-                  Browse Products
+                <NavLink href="/lessons" className="block py-2">
+                  Explore
                 </NavLink>
               </li>
 
