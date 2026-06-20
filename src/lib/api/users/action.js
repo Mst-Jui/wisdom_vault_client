@@ -27,3 +27,16 @@ export const getLessonDetails = async (id) => {
   const resData = await serverFetch(`/api/lessons/${id}`);
   return resData;
 };
+
+export const toggleFavorite = async (lessonId, userId) => {
+  const resData = await serverMutation("/api/favorites/toggle", "POST", {
+    lessonId,
+    userId,
+  });
+  return resData;
+};
+
+export const getMyFavorites = async (userId) => {
+  const resData = await serverFetch(`/api/favorites/${userId}`);
+  return resData;
+};
