@@ -77,3 +77,45 @@ export const deleteUser = async (userId, requesterId) => {
   );
   return resData;
 };
+
+export const getAdminLessons = async (requesterId) => {
+  const resData = await serverFetch(
+    `/api/admin/lessons?requesterId=${requesterId}`
+  );
+  return resData;
+};
+
+export const ignoreReports = async (lessonId, requesterId) => {
+  const resData = await serverMutation(
+    `/api/admin/lessons/${lessonId}/ignore-reports`,
+    "PATCH",
+    { requesterId }
+  );
+  return resData;
+};
+
+export const getReportedLessons = async (requesterId) => {
+  const resData = await serverFetch(
+    `/api/admin/reported-lessons?requesterId=${requesterId}`
+  );
+  return resData;
+};
+
+export const getLessonReports = async (lessonId, requesterId) => {
+  const resData = await serverFetch(
+    `/api/admin/lessons/${lessonId}/reports?requesterId=${requesterId}`
+  );
+  return resData;
+};
+
+export const getAdminActivity = async (adminId) => {
+  const resData = await serverFetch(`/api/users/${adminId}/admin-activity`);
+  return resData;
+};
+
+export const getAdminDashboardOverview = async (requesterId) => {
+  const resData = await serverFetch(
+    `/api/admin/dashboard-overview?requesterId=${requesterId}`
+  );
+  return resData;
+};
