@@ -57,3 +57,23 @@ export const getDashboardOverview = async (userId) => {
   );
   return resData;
 };
+
+export const getAllUsers = async (requesterId) => {
+  const resData = await serverFetch(`/api/users?requesterId=${requesterId}`);
+  return resData;
+};
+
+export const updateUserRole = async (userId, role, requesterId) => {
+  const resData = await serverMutation(`/api/users/${userId}/role`, "PATCH", {
+    role,
+    requesterId,
+  });
+  return resData;
+};
+
+export const deleteUser = async (userId, requesterId) => {
+  const resData = await deleteMutation(
+    `/api/users/${userId}?requesterId=${requesterId}`
+  );
+  return resData;
+};

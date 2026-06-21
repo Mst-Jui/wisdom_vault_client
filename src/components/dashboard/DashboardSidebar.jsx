@@ -13,7 +13,6 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { TbReport } from "react-icons/tb";
 
-
 const ACTIVE_GRADIENT = "linear-gradient(to right, rgba(98, 42, 216, 0.5), rgba(168, 37, 142, 0.5))";
 
 const DashboardSideBar = () => {
@@ -38,15 +37,13 @@ const DashboardSideBar = () => {
   const adminMenu = [
     { key: "overview", label: "Overview", icon: GrOverview, href: "/dashboard/admin" },
     { key: "manage-users", label: "Manage Users", icon: FaUsers, href: "/dashboard/admin/manage-users" },
-    { key: "manage-lessons", label: " Manage Lessons", IoMdBook: FaUsers, href: "/dashboard/admin/manage-lessons" },
+    { key: "manage-lessons", label: " Manage Lessons", icon: IoMdBook, href: "/dashboard/admin/manage-lessons" },
     { key: "reported-lessons", label: "Reported-Lessons", icon: TbReport, href: "/dashboard/admin/reported-lessons" },
     { key: "profile", label: "Profile", icon: CgProfile, href: "/dashboard/admin/profile" },
   ];
 
   const role = session?.user?.role;
   const menuItems = role === "admin" ? adminMenu : userMenu;
-  const isUserMenu = role !== "admin";
-
 
   const isActive = (href) => {
     if (href === "/dashboard/user" || href === "/dashboard/admin") {
@@ -60,22 +57,22 @@ const DashboardSideBar = () => {
 
       <div className="md:hidden fixed top-0 left-0 w-full z-50 px-4 py-3 flex justify-between items-center">
         <button onClick={() => setIsOpen(!isOpen)} className="text-2xl">
-          {isOpen ? <FaTimes className="text-white"/> : <FaBars />}
+          {isOpen ? <FaTimes className="text-white" /> : <FaBars />}
         </button>
       </div>
 
-     
+
       <div className="md:hidden h-14" />
 
-     
+
       <aside
         className={`fixed md:relative top-0 left-0 h-screen w-64 z-40 transform transition-transform duration-300 ease-in-out 
   ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
   bg-slate-900 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border-r border-white/5`}
       >
         <div className="h-full flex flex-col">
-        
-          
+
+
           {/* logo hobe  */}
           <div className="px-6 py-5 border-b border-white/5">
             <div className="flex items-center gap-3">
@@ -100,35 +97,29 @@ const DashboardSideBar = () => {
 
           <nav className="flex-grow overflow-y-auto px-3 py-4 space-y-1">
             {menuItems?.map(({ key, label, icon: Icon, href }) => {
-              const active = isUserMenu && isActive(href);
+              const active = isActive(href);
 
               return (
                 <Link
                   key={key}
                   href={href}
                   style={active ? { backgroundImage: ACTIVE_GRADIENT } : undefined}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                    isUserMenu
-                      ? active
-                        ? "text-white"
-                        : "text-slate-400 hover:text-white"
-                      : "text-slate-400 hover:text-pink-700 hover:bg-white/5"
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${active ? "text-white" : "text-slate-400 hover:text-white"
+                    }`}
                   onMouseEnter={(e) => {
-                    if (isUserMenu && !active) {
+                    if (!active) {
                       e.currentTarget.style.backgroundImage = ACTIVE_GRADIENT;
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (isUserMenu && !active) {
+                    if (!active) {
                       e.currentTarget.style.backgroundImage = "";
                     }
                   }}
                 >
                   <span
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                      active ? "bg-white/15" : "bg-white/5"
-                    }`}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${active ? "bg-white/15" : "bg-white/5"
+                      }`}
                   >
                     <Icon size={16} />
                   </span>
@@ -149,7 +140,7 @@ const DashboardSideBar = () => {
         </div>
       </aside>
 
-      
+
       {isOpen && <div className="fixed inset-0 z-30 md:hidden" onClick={() => setIsOpen(false)} />}
     </>
   );

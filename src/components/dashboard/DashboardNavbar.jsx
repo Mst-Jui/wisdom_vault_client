@@ -25,7 +25,7 @@ const DashboardNavbar = () => {
 
 
 
-      <Link href={'/dashboard/user/profile'}>
+      <Link href={'/dashboard/admin/profile'}>
         <div className="px-6 py-5 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-pink-500/60 shrink-0">
