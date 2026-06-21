@@ -124,7 +124,7 @@ const MyFavoritesTable = ({ favorites: initialFavorites, user }) => {
               <tbody>
                 {filteredFavorites.map((lesson) => (
                   <tr key={lesson._id} className="border-t">
-                    <td className="p-4 font-medium max-w-[220px] truncate">
+                    <td className="p-4 text-gray-500 font-medium max-w-[220px] truncate">
                       {lesson.title}
                     </td>
                     <td className="p-4 text-gray-500">{lesson.category}</td>

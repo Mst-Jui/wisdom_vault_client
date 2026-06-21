@@ -17,7 +17,7 @@ const MyFavoritesPage = async () => {
         </p>
         <Link
           href="/login"
-          className="inline-block mt-4 px-5 py-2 rounded-lg bg-blue-600 text-white"
+          className="inline-block mt-4 px-5 py-2 rounded-full bg-gradient-to-r from-[#622ad8] to-[#a8258e] text-white"
         >
           Go to Login
         </Link>
@@ -43,7 +43,7 @@ const MyFavoritesPage = async () => {
           <div className="mt-4">
             <Link
               href="/public-lessons"
-              className="inline-block px-4 py-2 rounded-lg bg-blue-600 text-white text-sm"
+              className="inline-block px-4 py-2 rounded-full bg-gradient-to-r from-[#622ad8] to-[#a8258e] text-white text-sm"
             >
               Browse Public Lessons
             </Link>

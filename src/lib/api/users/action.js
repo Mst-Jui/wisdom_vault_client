@@ -40,3 +40,20 @@ export const getMyFavorites = async (userId) => {
   const resData = await serverFetch(`/api/favorites/${userId}`);
   return resData;
 };
+
+export const updateProfile = async (data, userId) => {
+  const resData = await serverMutation(`/api/users/${userId}`, "PATCH", data);
+  return resData;
+};
+
+export const getProfileStats = async (userId) => {
+  const resData = await serverFetch(`/api/users/${userId}/profile-stats`);
+  return resData;
+};
+
+export const getDashboardOverview = async (userId) => {
+  const resData = await serverFetch(
+    `/api/users/${userId}/dashboard-overview`
+  );
+  return resData;
+};

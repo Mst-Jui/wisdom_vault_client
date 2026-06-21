@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaBuilding, FaCalendarAlt, FaHome, FaPlus, FaSignOutAlt, FaUsers, FaUserShield, FaBars, FaTimes } from "react-icons/fa";
 import ThemeToggle from "../common/Toggle";
 import { IoHome, IoHomeOutline } from "react-icons/io5";
@@ -11,10 +11,15 @@ import { IoMdAddCircleOutline, IoMdBook } from "react-icons/io";
 import { GrOverview } from "react-icons/gr";
 import { MdFavoriteBorder } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import { TbReport } from "react-icons/tb";
+
+
+const ACTIVE_GRADIENT = "linear-gradient(to right, rgba(98, 42, 216, 0.5), rgba(168, 37, 142, 0.5))";
 
 const DashboardSideBar = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -31,23 +36,38 @@ const DashboardSideBar = () => {
   ];
 
   const adminMenu = [
-    { key: "overview", label: "Overview", icon: FaUserShield, href: "/dashboard/admin" },
-    { key: "users", label: "Manage Users", icon: FaUsers, href: "/dashboard/admin/manage-users" },
+    { key: "overview", label: "Overview", icon: GrOverview, href: "/dashboard/admin" },
+    { key: "manage-users", label: "Manage Users", icon: FaUsers, href: "/dashboard/admin/manage-users" },
+    { key: "manage-lessons", label: " Manage Lessons", IoMdBook: FaUsers, href: "/dashboard/admin/manage-lessons" },
+    { key: "reported-lessons", label: "Reported-Lessons", icon: TbReport, href: "/dashboard/admin/reported-lessons" },
+    { key: "profile", label: "Profile", icon: CgProfile, href: "/dashboard/admin/profile" },
   ];
 
   const role = session?.user?.role;
   const menuItems = role === "admin" ? adminMenu : userMenu;
+  const isUserMenu = role !== "admin";
+
+
+  const isActive = (href) => {
+    if (href === "/dashboard/user" || href === "/dashboard/admin") {
+      return pathname === href;
+    }
+    return pathname === href || pathname?.startsWith(`${href}/`);
+  };
 
   return (
     <>
-      {/* মোবাইল মেনু বাটন */}
-      <div className="md:hidden sticky top-0 left-0 w-full z-50 bg-gray-400 rounded-full px-4 py-3 flex justify-between items-center shadow-sm">
+
+      <div className="md:hidden fixed top-0 left-0 w-full z-50 px-4 py-3 flex justify-between items-center">
         <button onClick={() => setIsOpen(!isOpen)} className="text-2xl">
-          {isOpen ? <FaTimes /> : <FaBars />}
+          {isOpen ? <FaTimes className="text-white"/> : <FaBars />}
         </button>
       </div>
 
-      {/* সাইডবার */}
+     
+      <div className="md:hidden h-14" />
+
+     
       <aside
         className={`fixed md:relative top-0 left-0 h-screen w-64 z-40 transform transition-transform duration-300 ease-in-out 
   ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
@@ -79,12 +99,43 @@ const DashboardSideBar = () => {
           </div>
 
           <nav className="flex-grow overflow-y-auto px-3 py-4 space-y-1">
-            {menuItems?.map(({ key, label, icon: Icon, href }) => (
-              <Link key={key} href={href} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-400 hover:text-pink-700 hover:bg-white/5 transition-all">
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5"><Icon size={16} /></span>
-                {label}
-              </Link>
-            ))}
+            {menuItems?.map(({ key, label, icon: Icon, href }) => {
+              const active = isUserMenu && isActive(href);
+
+              return (
+                <Link
+                  key={key}
+                  href={href}
+                  style={active ? { backgroundImage: ACTIVE_GRADIENT } : undefined}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    isUserMenu
+                      ? active
+                        ? "text-white"
+                        : "text-slate-400 hover:text-white"
+                      : "text-slate-400 hover:text-pink-700 hover:bg-white/5"
+                  }`}
+                  onMouseEnter={(e) => {
+                    if (isUserMenu && !active) {
+                      e.currentTarget.style.backgroundImage = ACTIVE_GRADIENT;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (isUserMenu && !active) {
+                      e.currentTarget.style.backgroundImage = "";
+                    }
+                  }}
+                >
+                  <span
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      active ? "bg-white/15" : "bg-white/5"
+                    }`}
+                  >
+                    <Icon size={16} />
+                  </span>
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="px-3 py-4 border-t border-white/5 space-y-1">
@@ -98,7 +149,7 @@ const DashboardSideBar = () => {
         </div>
       </aside>
 
-      {/* মোবাইল ওভারলে */}
+      
       {isOpen && <div className="fixed inset-0 z-30 md:hidden" onClick={() => setIsOpen(false)} />}
     </>
   );
