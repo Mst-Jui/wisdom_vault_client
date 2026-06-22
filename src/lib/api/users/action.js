@@ -28,6 +28,11 @@ export const getLessonDetails = async (id) => {
   return resData;
 };
 
+export const getFeaturedLessons = async (limit = 6) => {
+  const resData = await serverFetch(`/api/lessons/featured?limit=${limit}`);
+  return resData;
+};
+
 export const toggleFavorite = async (lessonId, userId) => {
   const resData = await serverMutation("/api/favorites/toggle", "POST", {
     lessonId,
