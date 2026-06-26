@@ -18,6 +18,7 @@ const SignUpPage = () => {
   const [imageUrl, setImageUrl] = useState("");
   const fileRef = useRef(null);
 
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -38,13 +39,14 @@ const SignUpPage = () => {
   };
 
   const onSubmit = async (e) => {
-    // Upload image to imgbb
-    // const imageFile = data.image[0];
-    // const imageUrl = await uploadImage(imageFile)
-
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
+    const passwordError = validatePassword(user.password);
+    if (passwordError) {
+      toast.error(passwordError);
+      return;
+    }
 
     let imageUrlFinal = "";
     if (fileRef.current?.files?.[0]) {
@@ -58,14 +60,20 @@ const SignUpPage = () => {
       ...user,
       isPremium: false,
       image: imageUrlFinal,
+      // plan: "free",
     });
 
     toast.success("Account created!");
     redirect('/signin')
   };
 
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  }
   return (
-    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-5">
+    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-5 mb-5">
       <Surface className="w-full">
         <Form
           onSubmit={onSubmit}
@@ -74,17 +82,12 @@ const SignUpPage = () => {
             {/* Welcome Section */}
             {/* Welcome Section */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-                Welcome to Wisdom Vault 🌿
+              <h1 className="text-2xl md:text-3xl font-bold">
+                Welcome to Wisdom Vault
               </h1>
 
-              <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-                Capture your experiences, preserve meaningful life lessons, and grow with a
-                community that believes in learning from every moment of life.
-              </p>
-
               <p className="mt-2 text-xs md:text-sm text-gray-500 dark:text-gray-500">
-                Sign up to start sharing your journey, saving wisdom, and exploring lessons from others.
+                Join us to start sharing your journey, saving wisdom, and exploring lessons from others.
               </p>
             </div>
           </div>
@@ -102,17 +105,8 @@ const SignUpPage = () => {
 
               {/* Image URL + local file picker */}
               <div className="flex flex-col gap-1.5">
-                <Label>Image URL</Label>
+                <Label>Image</Label>
                 <div className="flex gap-2 items-center">
-                  <input
-                    type="url"
-                    name="image"
-                    placeholder="https://example.com/photo.jpg"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500 dark:text-white placeholder:text-gray-400"
-                  />
-                  {/* Hidden file input */}
                   <input
                     ref={fileRef}
                     type="file"
@@ -207,16 +201,17 @@ const SignUpPage = () => {
               </div>
 
               {/* Google Button */}
-              <Link href={'/'}>
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-center gap-2 rounded-full border border-gray-700/50 py-3 text-sm font-medium hover:bg-gray-200 transition"
-                >
-                  {/* Google Icon */}
-                  <FcGoogle />
-                  Sign up with Google
-                </button>
-              </Link>
+
+              <button
+                onClick={handleGoogleSignIn}
+                type="button"
+                className="w-full flex items-center justify-center gap-2 rounded-full border border-gray-700/50 py-3 text-sm font-medium hover:bg-gray-200 transition"
+              >
+                {/* Google Icon */}
+                <FcGoogle />
+                Sign up with Google
+              </button>
+
 
 
               {/* Login Link */}

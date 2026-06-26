@@ -7,6 +7,7 @@ import { BiReset } from "react-icons/bi";
 import { authClient } from "@/lib/auth-client";
 import { serverFetch } from "@/lib/api/server";
 import Button from "@/components/reusable/Button";
+import { ImageOff } from "lucide-react";
 
 const LessonsPage = () => {
   const [lessons, setLessons] = useState([]);
@@ -184,21 +185,29 @@ const LessonsPage = () => {
             lesson.accessLevel === "Premium" &&
             !currentUser?.isPremium &&
             currentUser?.email !==
-              lesson.creatorEmail;
+            lesson.creatorEmail;
 
           return (
             <div
               key={lesson._id}
               className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
             >
-              <img
-                src={
-                  lesson.image ||
-                  "https://images.unsplash.com/photo-1517841905240-472988babdf9"
-                }
-                alt={lesson.title}
-                className="h-48 w-full object-cover"
-              />
+              
+
+              {
+                lesson.image ? (
+                  <img
+                    src={lesson.image}
+                    alt={lesson.title}
+                    className="h-48 w-full object-cover"
+                  />
+                ) : (
+                  <div className="h-48 w-full bg-gray-100 flex flex-col items-center justify-center">
+                    <ImageOff className="w-12 h-12 text-gray-400" />
+                    <p className="mt-2 text-sm text-gray-500">No Image Available</p>
+                  </div>
+                )
+              }
 
               {isLocked && (
                 <div className="absolute inset-0 z-20 bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
@@ -219,11 +228,10 @@ const LessonsPage = () => {
               )}
 
               <div
-                className={`p-4 ${
-                  isLocked
+                className={`p-4 ${isLocked
                     ? "blur-sm select-none"
                     : ""
-                }`}
+                  }`}
               >
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs px-2 py-1 rounded-full">
@@ -231,12 +239,11 @@ const LessonsPage = () => {
                   </span>
 
                   <span
-                    className={`text-xs px-2 py-1 rounded-full ${
-                      lesson.accessLevel ===
-                      "Premium"
+                    className={`text-xs px-2 py-1 rounded-full ${lesson.accessLevel ===
+                        "Premium"
                         ? "bg-yellow-100 text-yellow-700"
                         : "bg-green-100 text-green-700"
-                    }`}
+                      }`}
                   >
                     {lesson.accessLevel}
                   </span>

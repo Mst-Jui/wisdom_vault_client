@@ -8,9 +8,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const BRAND_GRADIENT_CLASS = "bg-gradient-to-br from-[#622ad8] to-[#a8258e]";
 
-// Link with an animated gradient bottom-border on hover, used for Quick Links + Legal.
-// Pure CSS: a gradient bg-image is always present but clipped to 0 width via
-// background-size, then expanded on hover — no JS needed.
+
 const FooterLink = ({ href, children }) => (
   <Link
     href={href}
@@ -20,9 +18,9 @@ const FooterLink = ({ href, children }) => (
   </Link>
 );
 
-// Social icon button — gradient background fades in via opacity on hover (pure CSS)
+
 const SocialIcon = ({ href, label, children }) => (
-  <a
+  <Link
     href={href}
     target="_blank"
     rel="noopener noreferrer"
@@ -33,7 +31,7 @@ const SocialIcon = ({ href, label, children }) => (
       className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${BRAND_GRADIENT_CLASS}`}
     />
     <span className="relative z-10">{children}</span>
-  </a>
+  </Link>
 );
 
 const Footer = () => {
@@ -70,9 +68,6 @@ const Footer = () => {
               </li>
               <li>
                 <FooterLink href="/lessons">Public Lessons</FooterLink>
-              </li>
-              <li>
-                <FooterLink href="/pricing">Pricing / Upgrade</FooterLink>
               </li>
               <li>
                 <FooterLink href="/about">About</FooterLink>

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Button from "@/components/reusable/Button";
 import Image from "next/image";
 import { FcLock } from "react-icons/fc";
+import { ImageOff } from "lucide-react";
 
 const REPORT_REASONS = [
   "Spam or misleading",
@@ -33,6 +34,11 @@ const LessonDetailsPage = () => {
   const [reportOpen, setReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState(REPORT_REASONS[0]);
   const [reporting, setReporting] = useState(false);
+  // const isCreator = user?.email === lesson?.creatorEmail;
+  const isCreator =
+    user?.email &&
+    lesson?.creatorEmail &&
+    user?.email === lesson?.creatorEmail;
 
   // ---------------- FETCH LESSON ----------------
   useEffect(() => {
@@ -253,28 +259,47 @@ const LessonDetailsPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-5">
-      {/* FEATURED IMAGE — blurred + locked when premium and user isn't premium */}
-      {lesson.image && (
-        <div className="relative w-full h-72 md:h-96 mb-8 rounded-2xl overflow-hidden">
-          <Image
-            fill
-            src={lesson.image}
-            alt={lesson.title}
-            className={`object-cover ${isLocked ? "blur-md scale-105" : ""
-              }`}
-          />
+      
 
-          {isLocked && (
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center px-4">
-              <span className="text-4xl mb-2">
-                <FcLock />
-              </span>
-              <p className="font-semibold">Premium Lesson</p>
-              <p className="text-xs opacity-90">Upgrade to view this image</p>
-            </div>
-          )}
-        </div>
-      )}
+
+      <div className="relative w-full h-72 md:h-96 mb-8 rounded-2xl overflow-hidden">
+        {lesson.image ? (
+          <>
+            <Image
+              fill
+              src={lesson.image}
+              alt={lesson.title}
+              className={`object-cover ${isLocked ? "blur-md scale-105" : ""}`}
+            />
+
+            {isLocked && (
+              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+                <FcLock className="text-4xl mb-2" />
+                <p className="font-semibold">Premium Lesson</p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="h-full w-full bg-gray-100 flex flex-col items-center justify-center">
+            <ImageOff className="w-16 h-16 text-gray-400" />
+
+            <p className="mt-3 text-gray-500">
+              No Image Available
+            </p>
+
+            {isCreator && (
+              <Link
+                href="/dashboard/user/my-lessons"
+                className="mt-4"
+              >
+                <Button>Upload Image</Button>
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
+
+
 
       {/* TITLE */}
       <div className="flex flex-wrap gap-2 text-sm text-gray-400 mb-6">

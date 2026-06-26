@@ -42,13 +42,19 @@ export default function SignInPage() {
     router.push("/");
   };
 
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  }
+
   return (
-    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-5">
+    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-5 mb-5">
       <Surface className="w-full">
         <Form onSubmit={onSubmit}>
           <Fieldset className="w-full">
-            <Fieldset.Legend>Sign In</Fieldset.Legend>
-            <Description>Welcome back, log in to your account</Description>
+            <Fieldset.Legend className="text-center text-2xl md:text-3xl font-bold mb-6">Get back in the Wisdom Vault</Fieldset.Legend>
+            <Description className="text-center text-xs md:text-sm text-gray-500 dark:text-gray-500">Welcome back, log in to your account</Description>
             <Fieldset.Group>
               <TextField isRequired name="email" type="email">
                 <Label>Email</Label>
@@ -73,6 +79,7 @@ export default function SignInPage() {
               </div>
               {/* Google Button - tomar age kemon chilo shekhane rekhe dilam */}
               <button
+                onClick={handleGoogleSignIn}
                 type="button"
                 className="w-full flex items-center justify-center gap-2 rounded-full border border-gray-700/50 py-3 text-sm font-medium hover:bg-gray-200 transition"
               >
@@ -85,7 +92,7 @@ export default function SignInPage() {
                 <Link
                   href="/signup"
                   className="text-purple-600 hover:text-purple-800 font-medium transition">
-                
+
                   Sign Up
                 </Link>
               </p>

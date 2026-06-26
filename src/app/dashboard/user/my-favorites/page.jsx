@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
-// import { getUser } from "@/lib/getUser";
-import { getMyFavorites } from "@/lib/api/users/action"; // adjust path to match your project
+import { getMyFavorites } from "@/lib/api/users/action"; 
 import MyFavoritesTable from "@/components/dashboard/Myfavoritestable";
 import { getUser } from "@/lib/api/session";
-// import MyFavoritesTable from "./MyFavoritesTable";
+
 
 const MyFavoritesPage = async () => {
   const user = await getUser();
@@ -16,10 +15,10 @@ const MyFavoritesPage = async () => {
           Please log in to view your favorites.
         </p>
         <Link
-          href="/login"
+          href="/signin"
           className="inline-block mt-4 px-5 py-2 rounded-full bg-gradient-to-r from-[#622ad8] to-[#a8258e] text-white"
         >
-          Go to Login
+          Go to Sign in
         </Link>
       </div>
     );
@@ -42,7 +41,7 @@ const MyFavoritesPage = async () => {
           You haven&apos;t saved any lessons yet.
           <div className="mt-4">
             <Link
-              href="/public-lessons"
+              href="/lessons"
               className="inline-block px-4 py-2 rounded-full bg-gradient-to-r from-[#622ad8] to-[#a8258e] text-white text-sm"
             >
               Browse Public Lessons

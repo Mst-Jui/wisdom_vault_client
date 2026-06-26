@@ -74,7 +74,7 @@ const DashboardSideBar = () => {
 
 
           {/* logo hobe  */}
-          <div className="px-6 py-5 border-b border-white/5">
+          {/* <div className="px-6 py-5 border-b border-white/5">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-pink-500/60 shrink-0">
                 <Image
@@ -93,7 +93,15 @@ const DashboardSideBar = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
+
+          <Link href="/" className="inline-flex items-center gap-2 px-6 py-5 border-b border-white/5"
+          >
+            <span className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0 bg-gradient-to-br from-[#622ad8] to-[#a8258e]`}>
+              W
+            </span>
+            <span className="text-lg font-bold">Wisdom Vault</span>
+          </Link>
 
           <nav className="flex-grow overflow-y-auto px-3 py-4 space-y-1">
             {menuItems?.map(({ key, label, icon: Icon, href }) => {

@@ -33,6 +33,15 @@ export const getFeaturedLessons = async (limit = 6) => {
   return resData;
 };
 
+export const getTopContributors = async (limit = 6) => {
+  const resData = await serverFetch(`/api/top-contributors?limit=${limit}`);
+  return resData;
+};
+export const getMostSaved = async (limit = 6) => {
+  const resData = await serverFetch(`/api/lessons/most-saved?limit=${limit}`);
+  return resData;
+};
+
 export const toggleFavorite = async (lessonId, userId) => {
   const resData = await serverMutation("/api/favorites/toggle", "POST", {
     lessonId,
@@ -115,6 +124,15 @@ export const getLessonReports = async (lessonId, requesterId) => {
 
 export const getAdminActivity = async (adminId) => {
   const resData = await serverFetch(`/api/users/${adminId}/admin-activity`);
+  return resData;
+};
+
+
+export const getMostSavedLessons = async (limit = 6) => {
+  const resData = await serverFetch(
+    `/api/lessons/most-saved?limit=${limit}`
+  );
+
   return resData;
 };
 
