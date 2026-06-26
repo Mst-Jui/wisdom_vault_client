@@ -8,7 +8,8 @@ import toast from "react-hot-toast";
 import Button from "@/components/reusable/Button";
 import Image from "next/image";
 import { FcLock } from "react-icons/fc";
-import { ImageOff } from "lucide-react";
+import { getLessonDetails } from "@/lib/api/users/action";
+import { uploadImage } from "@/utils/UploadImage";
 
 const REPORT_REASONS = [
   "Spam or misleading",
@@ -34,7 +35,7 @@ const LessonDetailsPage = () => {
   const [reportOpen, setReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState(REPORT_REASONS[0]);
   const [reporting, setReporting] = useState(false);
-  // const isCreator = user?.email === lesson?.creatorEmail;
+
   const isCreator =
     user?.email &&
     lesson?.creatorEmail &&
@@ -47,15 +48,10 @@ const LessonDetailsPage = () => {
     const fetchLesson = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/lessons/${id}`
-        );
-        const data = await res.json();
-
-        if (!res.ok || !data.success) {
+        const data = await getLessonDetails(id);
+        if (!data.success) {
           throw new Error(data.message || "Failed to load lesson");
         }
-
         setLesson(data.data);
         setLiked(
           user?.id ? (data.data.likes || []).includes(user.id) : false
@@ -107,13 +103,10 @@ const LessonDetailsPage = () => {
           body: JSON.stringify({ userId: user.id }),
         }
       );
-
       const data = await res.json();
-
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Failed to update like");
       }
-
       setLesson((prev) => ({
         ...prev,
         likesCount: data.likesCount,
@@ -141,13 +134,10 @@ const LessonDetailsPage = () => {
           body: JSON.stringify({ lessonId: id, userId: user.id }),
         }
       );
-
       const data = await res.json();
-
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Failed to update favorites");
       }
-
       setSaved(data.saved);
       setLesson((prev) => ({
         ...prev,
@@ -184,13 +174,10 @@ const LessonDetailsPage = () => {
           }),
         }
       );
-
       const data = await res.json();
-
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Failed to post comment");
       }
-
       setLesson((prev) => ({
         ...prev,
         comments: [data.comment, ...(prev.comments || [])],
@@ -225,13 +212,10 @@ const LessonDetailsPage = () => {
           }),
         }
       );
-
       const data = await res.json();
-
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Failed to report lesson");
       }
-
       toast.success("Lesson reported. Our team will review it.");
       setReportOpen(false);
     } catch (err) {
@@ -259,54 +243,69 @@ const LessonDetailsPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-5">
-      
 
-
-      <div className="relative w-full h-72 md:h-96 mb-8 rounded-2xl overflow-hidden">
-        {lesson.image ? (
-          <>
-            <Image
-              fill
-              src={lesson.image}
-              alt={lesson.title}
-              className={`object-cover ${isLocked ? "blur-md scale-105" : ""}`}
-            />
-
-            {isLocked && (
-              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
-                <FcLock className="text-4xl mb-2" />
-                <p className="font-semibold">Premium Lesson</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="h-full w-full bg-gray-100 flex flex-col items-center justify-center">
-            <ImageOff className="w-16 h-16 text-gray-400" />
-
-            <p className="mt-3 text-gray-500">
-              No Image Available
-            </p>
-
-            {isCreator && (
-              <Link
-                href="/dashboard/user/my-lessons"
-                className="mt-4"
-              >
-                <Button>Upload Image</Button>
-              </Link>
-            )}
-          </div>
-        )}
-      </div>
-
-
+      {/* IMAGE SECTION */}
+      {lesson.image && lesson.image.trim() !== "" ? (
+        <div className="relative w-full h-72 md:h-96 mb-8 rounded-2xl overflow-hidden">
+          <Image
+            fill
+            src={lesson.image}
+            alt={lesson.title}
+            className={`object-cover ${isLocked ? "blur-md scale-105" : ""}`}
+          />
+          {isLocked && (
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+              <FcLock className="text-4xl mb-2" />
+              <p className="font-semibold">Premium Lesson</p>
+            </div>
+          )}
+        </div>
+      ) : isCreator ? (
+        <div className="relative w-full h-40 md:h-52 mb-8 rounded-2xl overflow-hidden bg-gray-100 flex flex-col items-center justify-center">
+          <p className="text-gray-500 mb-3">No Image Available</p>
+          <input
+            id="lesson-image-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              try {
+                const imageUrl = await uploadImage(file);
+                if (!imageUrl) return;
+                const updateRes = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_URL}/api/lessons/${id}`,
+                  {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: user.id, image: imageUrl }),
+                  }
+                );
+                const updateData = await updateRes.json();
+                if (updateData.success) {
+                  setLesson((prev) => ({ ...prev, image: imageUrl }));
+                  toast.success("Image uploaded successfully");
+                } else {
+                  toast.error("Failed to update lesson");
+                }
+              } catch (err) {
+                toast.error("Image upload failed");
+              }
+            }}
+          />
+          <label htmlFor="lesson-image-upload" className="cursor-pointer">
+            <Link  href="/dashboard/user/my-lessons">
+              <Button as="span">Upload Image</Button>
+            </Link>
+          </label>
+        </div>
+      ) : null}
 
       {/* TITLE */}
       <div className="flex flex-wrap gap-2 text-sm text-gray-400 mb-6">
         <span className="px-3 py-1 rounded-full">{lesson.category}</span>
-        <span className="px-3 py-1 rounded-full">
-          {lesson.emotionalTone}
-        </span>
+        <span className="px-3 py-1 rounded-full">{lesson.emotionalTone}</span>
         <span className="px-3 py-1 rounded-full">{lesson.accessLevel}</span>
       </div>
       <h1 className="text-3xl md:text-4xl font-bold mb-2">{lesson.title}</h1>
@@ -337,15 +336,11 @@ const LessonDetailsPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm rounded-xl p-4 mb-8">
             <div>
               <p className="text-gray-400">Created</p>
-              <p className="font-medium">
-                {lesson.createdAt?.slice(0, 10)}
-              </p>
+              <p className="font-medium">{lesson.createdAt?.slice(0, 10)}</p>
             </div>
             <div>
               <p className="text-gray-400">Last Updated</p>
-              <p className="font-medium">
-                {lesson.updatedAt?.slice(0, 10) || "—"}
-              </p>
+              <p className="font-medium">{lesson.updatedAt?.slice(0, 10) || "—"}</p>
             </div>
             <div>
               <p className="text-gray-400">Visibility</p>
@@ -356,9 +351,7 @@ const LessonDetailsPage = () => {
               <p className="font-medium">
                 {Math.max(
                   1,
-                  Math.ceil(
-                    (lesson.description?.split(" ").length || 0) / 200
-                  )
+                  Math.ceil((lesson.description?.split(" ").length || 0) / 200)
                 )}{" "}
                 min
               </p>
@@ -368,13 +361,15 @@ const LessonDetailsPage = () => {
           {/* AUTHOR CARD */}
           <div className="flex items-center justify-between gap-4 border rounded-2xl p-4 mb-8">
             <div className="flex items-center gap-3">
-              <Image
-                width={100}
-                height={100}
-                src={lesson.creatorPhoto}
-                className="w-12 h-12 rounded-full object-cover"
-                alt={lesson.creatorName || "Creator"}
-              />
+              {lesson.creatorPhoto && lesson.creatorPhoto.trim() !== "" && (
+                <Image
+                  width={100}
+                  height={100}
+                  src={lesson.creatorPhoto}
+                  className="w-12 h-12 rounded-full object-cover"
+                  alt={lesson.creatorName || "Creator"}
+                />
+              )}
               <div>
                 <p className="font-semibold">{lesson.creatorName}</p>
                 <p className="text-xs text-gray-500">
@@ -399,15 +394,10 @@ const LessonDetailsPage = () => {
             <Button onClick={handleLike}>
               {liked ? "❤️ Unlike" : "🤍 Like"}
             </Button>
-
             <Button onClick={handleFavorite}>
               {saved ? "🔖 Saved" : "🔖 Save to Favorites"}
             </Button>
-
-            <Button
-              onClick={() => setReportOpen(true)}
-              className="bg-red-500"
-            >
+            <Button onClick={() => setReportOpen(true)} className="bg-red-500">
               🚩 Report
             </Button>
           </div>
@@ -448,7 +438,6 @@ const LessonDetailsPage = () => {
             <h2 className="text-xl font-semibold mb-4">
               Comments ({lesson.comments?.length || 0})
             </h2>
-
             <div className="flex gap-2 mb-6">
               <input
                 value={comment}
@@ -460,13 +449,12 @@ const LessonDetailsPage = () => {
                 {posting ? "Posting..." : "Post"}
               </Button>
             </div>
-
             <div className="space-y-3">
               {lesson.comments?.length ? (
                 lesson.comments.map((c) => (
                   <div key={c._id} className="border p-3 rounded-xl">
                     <div className="flex items-center gap-2 mb-1">
-                      {c.userPhoto && (
+                      {c.userPhoto && c.userPhoto.trim() !== "" && (
                         <Image
                           width={100}
                           height={100}

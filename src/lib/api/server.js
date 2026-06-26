@@ -14,13 +14,11 @@ export const authHeader = async () => {
 
 
 export const serverMutation = async (path, method, data) => {
-  
-
   const res = await fetch(`${baseURL}${path}`, {
     method: method,
     headers: {
       "Content-Type": "application/json",
-     ...await authHeader(),
+      ...await authHeader(),
     },
     body: JSON.stringify(data),
   });
@@ -30,22 +28,20 @@ export const serverMutation = async (path, method, data) => {
 
 
 export const deleteMutation = async (path) => {
-  // const { data: tokenData } = await authClient.token()
   const res = await fetch(`${baseURL}${path}`, {
     method: "DELETE",
     headers: {
-      // authorization: `Bearer ${tokenData?.token}`,
+      ...await authHeader(),
     },
   });
   return res.json();
 };
 
 export const serverFetch = async (path) => {
-  // const { data: tokenData } = await authClient.token()
   const res = await fetch(`${baseURL}${path}`, {
     cache: "no-store",
     headers: {
-      // authorization: `Bearer ${tokenData?.token}`,
+      ...await authHeader(),
     },
   });
   return res.json();
