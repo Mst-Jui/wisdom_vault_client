@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ImageOff } from "lucide-react";
 import { getProfileStats } from "@/lib/api/users/action";
 
 
@@ -126,36 +125,25 @@ const ProfilePage = () => {
               <Link
                 key={lesson._id}
                 href={`/lessons/${lesson._id}`}
-                className="border rounded-2xl overflow-hidden hover:shadow-md transition flex flex-col"
+                className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
               >
-                {/* Thumbnail */}
-                <div className="relative w-full h-40 bg-gray-100">
-                  {lesson.image && lesson.image.trim() !== "" ? (
-                    <Image
-                      src={lesson.image}
-                      alt={lesson.title}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="h-full w-full flex flex-col items-center justify-center">
-                      <ImageOff className="w-8 h-8 text-gray-300" />
-                    </div>
-                  )}
-
-                  {/* Access Level badge */}
-                  <span
-                    className={`absolute top-2 right-2 text-xs px-2 py-0.5 rounded-full font-medium ${lesson.accessLevel === "Premium"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-green-100 text-green-700"
-                      }`}
-                  >
-                    {lesson.accessLevel === "Premium" ? "⭐ Premium" : "Free"}
-                  </span>
-                </div>
-
                 {/* Body */}
                 <div className="p-4 flex flex-col flex-1">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs px-2 py-1 rounded-full bg-gray-100">
+                      {lesson.category}
+                    </span>
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full ${
+                        lesson.accessLevel === "Premium"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {lesson.accessLevel === "Premium" ? "⭐ Premium" : "Free"}
+                    </span>
+                  </div>
+
                   <h3 className="font-semibold text-base line-clamp-1 mb-1">
                     {lesson.title}
                   </h3>
@@ -164,9 +152,6 @@ const ProfilePage = () => {
                   </p>
 
                   <div className="mt-auto flex flex-wrap gap-2 text-xs text-gray-400">
-                    <span className="bg-gray-100 px-2 py-0.5 rounded-full">
-                      {lesson.category}
-                    </span>
                     <span className="bg-gray-100 px-2 py-0.5 rounded-full">
                       {lesson.emotionalTone}
                     </span>
