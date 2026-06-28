@@ -1,3 +1,14 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
 @custom-variant dark (&:where(.dark, .dark *));
+
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-playfair);
+}
+
+body {
+  font-family: var(--font-inter);
+}
