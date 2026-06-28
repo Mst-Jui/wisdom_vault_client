@@ -73,13 +73,12 @@ const SignUpPage = () => {
     });
   }
   return (
-    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-5 mb-5">
+    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-13 mb-7">
       <Surface className="w-full">
         <Form
           onSubmit={onSubmit}
         >
           <div>
-            {/* Welcome Section */}
             {/* Welcome Section */}
             <div className="text-center mb-8">
               <h1 className="text-2xl md:text-3xl font-bold">
@@ -92,14 +91,12 @@ const SignUpPage = () => {
             </div>
           </div>
           <Fieldset className="w-full">
-            {/* <Fieldset.Legend>Signup</Fieldset.Legend>
-            <Description>Create your account</Description> */}
             <Fieldset.Group>
 
               {/* Name */}
               <TextField isRequired name="name">
                 <Label>Name</Label>
-                <Input placeholder="John Doe" variant="secondary" />
+                <Input placeholder="Enter your name" variant="secondary" />
                 <FieldError />
               </TextField>
 
@@ -155,14 +152,14 @@ const SignUpPage = () => {
               {/* Email */}
               <TextField isRequired name="email" type="email">
                 <Label>Email</Label>
-                <Input placeholder="john@example.com" variant="secondary" />
+                <Input placeholder="Enter your email" variant="secondary" />
                 <FieldError />
               </TextField>
 
               {/* Password */}
               <TextField isRequired name="password" type="password">
                 <Label>Password</Label>
-                <Input placeholder="Password" variant="secondary" />
+                <Input placeholder="Enter your password" variant="secondary" />
                 <FieldError />
               </TextField>
 

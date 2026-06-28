@@ -49,7 +49,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-5 mb-5">
+    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 max-w-2xl mx-auto border mt-13 mb-7">
       <Surface className="w-full">
         <Form onSubmit={onSubmit}>
           <Fieldset className="w-full">
@@ -58,12 +58,12 @@ export default function SignInPage() {
             <Fieldset.Group>
               <TextField isRequired name="email" type="email">
                 <Label>Email</Label>
-                <Input placeholder="john@example.com" variant="secondary" />
+                <Input placeholder="Enter your email" variant="secondary" />
                 <FieldError />
               </TextField>
               <TextField isRequired name="password" type="password">
                 <Label>Password</Label>
-                <Input placeholder="Password" variant="secondary" />
+                <Input placeholder="Enter your password" variant="secondary" />
                 <FieldError />
               </TextField>
             </Fieldset.Group>
