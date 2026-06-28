@@ -6,12 +6,12 @@ A modern full-stack web application where users can create, organize, and share 
 
 ## 🌐 Live Website
 
-🔗 **Live Site:** https://your-live-link.com
+🔗 **Live Site:** https://wisdom-vault-client.vercel.app   
 
 ## 💻 GitHub Repository
 
-* **Client:** https://github.com/your-username/client-repository
-* **Server:** https://github.com/your-username/server-repository
+* **Client:** https://github.com/Mst-Jui/wisdom_vault_client  
+* **Server:** https://github.com/Mst-Jui/wisdom_vault_server  
 
 ---
 
@@ -112,8 +112,8 @@ stripe
 Clone the repositories
 
 ```bash
-git clone <client-repository-url>
-git clone <server-repository-url>
+git clone https://github.com/Mst-Jui/wisdom_vault_client.git  
+git clone https://github.com/Mst-Jui/wisdom_vault_server.git  
 ```
 
 Install dependencies
