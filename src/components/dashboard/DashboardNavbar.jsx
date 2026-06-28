@@ -23,33 +23,27 @@ const DashboardNavbar = () => {
         <div className="px-6 py-5 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-pink-500/60 shrink-0">
-              {/* <Image
-                width={40} height={40}
-                src={session?.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent("User")}&background=7c3aed&color=fff`}
-                alt="Avatar" className="object-cover w-full h-full"
-              /> */}
-              <Avatar size="sm" aria-label="Menu">
+              <Avatar size="sm" aria-label="Menu" className="w-full h-full overflow-hidden rounded-full">
                 <Avatar.Image
                   referrerPolicy="no-referrer"
                   alt="John Doe"
                   src={session?.user?.image}
+                  className="aspect-square h-full w-full object-cover"
                 />
                 <Avatar.Fallback>{session?.user?.name.charAt(0)}</Avatar.Fallback>
               </Avatar>
-
             </div>
             <div>
               <p className="text-sm font-bold truncate">{session?.user?.name}</p>
               <span
-                className={`text-[10px] font-bold uppercase ${role === "user" ? "text-indigo-400" : "text-pink-600"
-                  }`}
+                className={`text-[10px] font-bold uppercase ${role === "user" ? "text-indigo-400" : "text-pink-600"}`}
               >
                 {role}
               </span>
             </div>
           </div>
         </div>
-      </Link >
+      </Link>
     </div >
   );
 };

@@ -94,22 +94,7 @@ const Navbar = () => {
                 </>
               )
             }
-            {/* jui  */}
-            {/* free user  */}
-            {/* {user && !user.isPremium && (
-              <li>
-                <NavLink href="/pricing">Pricing</NavLink>
-              </li>
-            )} */}
-            {/* premium user  */}
-            {/* {user?.isPremium && (
-              <li>
-                <span className="rounded-full bg-gradient-to-r from-[#622ad8] to-[#a8258e] px-3 py-1 text-sm text-white">
-                  Premium ⭐
-                </span>
-              </li>
-            )} */}
-            {/* jui  */}
+
             {/* Free User */}
             {user?.role === "user" && !user?.isPremium && (
               <li>
@@ -164,11 +149,12 @@ const Navbar = () => {
             <div className="hidden items-center gap-4 md:flex">
               <Dropdown>
                 <Dropdown.Trigger className="rounded-full">
-                  <Avatar size="sm" aria-label="Menu">
+                  <Avatar size="sm" aria-label="Menu" className="overflow-hidden rounded-full">
                     <Avatar.Image
                       referrerPolicy="no-referrer"
-                      alt="John Doe"
+                      alt={user.name.charAt(0)}
                       src={user?.image}
+                      className="aspect-square h-full w-full object-cover"
                     />
                     <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
                   </Avatar>
@@ -176,8 +162,12 @@ const Navbar = () => {
                 <Dropdown.Popover>
                   <div className="px-3 pt-3 pb-1">
                     <div className="flex items-center gap-2">
-                      <Avatar size="sm">
-                        <Avatar.Image alt={user?.name} src={user?.image} />
+                      <Avatar size="sm" className="overflow-hidden rounded-full">
+                        <Avatar.Image
+                          alt={user?.name}
+                          src={user?.image}
+                          className="aspect-square h-full w-full object-cover"
+                        />
                         <Avatar.Fallback delayMs={600}>{user.name.charAt(0)}</Avatar.Fallback>
                       </Avatar>
                       <div className="flex flex-col gap-0">
@@ -202,14 +192,12 @@ const Navbar = () => {
                         <Label>Dashboard</Label>
                       </Link>
                     </Dropdown.Item>
-
                     <Dropdown.Item id="copy-link" textValue="Copy link">
                       <Link href={`/dashboard/${user?.role}/profile`} className="flex items-center gap-2">
                         <CgProfile />
                         <Label>Profile</Label>
                       </Link>
                     </Dropdown.Item>
-
                     <Dropdown.Item
                       id="delete-file"
                       textValue="Delete file"
@@ -226,7 +214,6 @@ const Navbar = () => {
           )}
 
 
-
           {/* Mobile Auth (Avatar or Signup link) */}
           <div className="md:hidden">
             {!user ? (
@@ -237,11 +224,12 @@ const Navbar = () => {
               <div className="items-center gap-4 md:flex">
                 <Dropdown>
                   <Dropdown.Trigger className="rounded-full">
-                    <Avatar size="sm" aria-label="Menu">
+                    <Avatar size="sm" aria-label="Menu" className="overflow-hidden rounded-full">
                       <Avatar.Image
                         referrerPolicy="no-referrer"
                         alt="John Doe"
                         src={user?.image}
+                        className="aspect-square h-full w-full object-cover"
                       />
                       <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
                     </Avatar>
@@ -249,8 +237,12 @@ const Navbar = () => {
                   <Dropdown.Popover>
                     <div className="px-3 pt-3 pb-1">
                       <div className="flex items-center gap-2">
-                        <Avatar size="sm">
-                          <Avatar.Image alt={user?.name} src={user?.image} />
+                        <Avatar size="sm" className="overflow-hidden rounded-full">
+                          <Avatar.Image
+                            alt={user?.name}
+                            src={user?.image}
+                            className="aspect-square h-full w-full object-cover"
+                          />
                           <Avatar.Fallback delayMs={600}>{user.name.charAt(0)}</Avatar.Fallback>
                         </Avatar>
                         <div className="flex flex-col gap-0">
@@ -275,14 +267,12 @@ const Navbar = () => {
                           <Label>Dashboard</Label>
                         </Link>
                       </Dropdown.Item>
-
                       <Dropdown.Item id="copy-link" textValue="Copy link">
                         <Link href={`/dashboard/${user?.role}/profile`} className="flex items-center gap-2">
                           <CgProfile />
                           <Label>Profile</Label>
                         </Link>
                       </Dropdown.Item>
-
                       <Dropdown.Item
                         id="delete-file"
                         textValue="Delete file"
@@ -363,13 +353,6 @@ const Navbar = () => {
 
               <li className="mt-4 flex flex-col gap-2 border-t border-separator pt-4">
                 <ThemeToggle />
-                {/* <Link href="/signin" className="block font-semibold py-2">
-                  Login
-                </Link>
-
-                <Link href="/signup">
-                  <Button className="w-full">Sign Up</Button>
-                </Link> */}
               </li>
             </ul>
           </div>
