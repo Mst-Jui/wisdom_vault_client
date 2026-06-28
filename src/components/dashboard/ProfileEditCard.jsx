@@ -2,15 +2,14 @@
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { updateProfile } from "@/lib/api/users/action"; // adjust path to match your project
+import { updateProfile } from "@/lib/api/users/action";
 import { uploadImage } from "@/utils/UploadImage";
+import Image from "next/image";
 
 const ProfileEditCard = ({ user, lessonsCreatedCount, favoritesSavedCount }) => {
   const [editing, setEditing] = useState(false);
 
-  // These two hold the CURRENT displayed values (not just "draft while editing").
-  // Once a save succeeds, these become the new source of truth for the UI,
-  // so the page never needs a reload to reflect the change.
+
   const [displayName, setDisplayName] = useState(user.name || "");
   const [displayImage, setDisplayImage] = useState(user.image || "");
 
@@ -102,7 +101,9 @@ const ProfileEditCard = ({ user, lessonsCreatedCount, favoritesSavedCount }) => 
       <div className="flex flex-col sm:flex-row sm:items-center gap-5">
         {/* PHOTO */}
         <div className="flex flex-col items-center sm:items-start gap-2 shrink-0">
-          <img
+          <Image
+            width={200}
+            height={200}
             src={(editing ? photoPreview : displayImage) || "/default-avatar.png"}
             alt={displayName}
             className="w-24 h-24 rounded-full object-cover border"
@@ -163,7 +164,7 @@ const ProfileEditCard = ({ user, lessonsCreatedCount, favoritesSavedCount }) => 
               <button
                 onClick={handleSave}
                 disabled={saving || uploading}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm disabled:opacity-60"
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-[#622ad8] to-[#a8258e] text-white text-sm disabled:opacity-60"
               >
                 {uploading
                   ? "Uploading..."
@@ -174,7 +175,7 @@ const ProfileEditCard = ({ user, lessonsCreatedCount, favoritesSavedCount }) => 
               <button
                 onClick={handleCancel}
                 disabled={saving || uploading}
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-600 text-sm"
+                className="px-4 py-2 rounded-full bg-gray-200 text-gray-600 text-sm"
               >
                 Cancel
               </button>
@@ -182,7 +183,7 @@ const ProfileEditCard = ({ user, lessonsCreatedCount, favoritesSavedCount }) => 
           ) : (
             <button
               onClick={handleEditOpen}
-              className="px-4 py-2 rounded-lg border text-sm"
+              className="px-4 py-2 rounded-full border text-sm"
             >
               Edit Profile
             </button>

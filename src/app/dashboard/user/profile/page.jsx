@@ -1,12 +1,10 @@
 import React from "react";
 import Link from "next/link";
-// import { getUser } from "@/lib/getUser"; 
-import { getProfileStats } from "@/lib/api/users/action"; // adjust path to match your project
+import { getProfileStats } from "@/lib/api/users/action"; 
 import ProfileEditCard from "@/components/dashboard/ProfileEditCard";
 import ProfileLessonsGrid from "@/components/dashboard/ProfileLessonsGrid";
 import { getUser } from "@/lib/api/session";
-// import ProfileEditCard from "./ProfileEditCard";
-// import ProfileLessonsGrid from "./ProfileLessonsGrid";
+
 
 const ProfilePage = async () => {
   const user = await getUser();

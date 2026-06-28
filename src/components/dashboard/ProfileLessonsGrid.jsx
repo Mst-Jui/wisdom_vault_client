@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Link from "next/link";
 
@@ -18,40 +17,33 @@ const ProfileLessonsGrid = ({ lessons }) => {
         <Link
           key={lesson._id}
           href={`/lessons/${lesson._id}`}
-          className="border rounded-2xl overflow-hidden hover:shadow-md transition flex flex-col"
+          className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
         >
-          {lesson.image && (
-            <img
-              src={lesson.image}
-              alt={lesson.title}
-              className="w-full h-40 object-cover"
-            />
-          )}
-
           <div className="p-4 flex flex-col flex-1">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs px-2 py-1 rounded-full bg-gray-100">
+                {lesson.category}
+              </span>
               <span
-                className={`px-2 py-0.5 rounded-full text-xs font-medium ${lesson.accessLevel === "Premium"
+                className={`text-xs px-2 py-1 rounded-full ${
+                  lesson.accessLevel === "Premium"
                     ? "bg-yellow-100 text-yellow-700"
-                    : "bg-blue-100 text-blue-700"
-                  }`}
+                    : "bg-green-100 text-green-700"
+                }`}
               >
                 {lesson.accessLevel}
               </span>
-              <span className="text-xs text-gray-400">
-                {lesson.createdAt?.slice(0, 10)}
-              </span>
             </div>
 
-            <p className="font-semibold mb-1 line-clamp-1">{lesson.title}</p>
-            <p className="text-sm text-gray-500 line-clamp-2 mb-3 flex-1">
+            <p className="font-bold text-lg line-clamp-1">{lesson.title}</p>
+
+            <p className="text-sm text-gray-500 mt-2 line-clamp-1">
               {lesson.description}
             </p>
 
-            <div className="flex gap-2 text-xs text-gray-400">
-              <span>{lesson.category}</span>
-              <span>•</span>
-              <span>{lesson.emotionalTone}</span>
+            <div className="space-y-1 text-sm text-gray-500 mt-3">
+              <p>Tone: {lesson.emotionalTone}</p>
+              <p>{lesson.createdAt?.slice(0, 10)}</p>
             </div>
           </div>
         </Link>
