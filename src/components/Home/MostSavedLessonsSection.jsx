@@ -26,16 +26,13 @@ const MostSavedLessonsSection = () => {
       try {
         const session = await authClient.getSession();
         const email = session?.data?.user?.email;
-
         if (!email) return;
-
         const userData = await serverFetch(`/api/lessons/most-saved?limit=6`);
         setCurrentUser(userData?.data);
       } catch (error) {
         console.error("User load error:", error);
       }
     };
-
     loadUser();
   }, []);
 
@@ -43,11 +40,7 @@ const MostSavedLessonsSection = () => {
     const loadMostSaved = async () => {
       try {
         setLoading(true);
-
-        const data = await serverFetch(
-          "/api/lessons/most-saved?limit=6"
-        );
-
+        const data = await serverFetch("/api/lessons/most-saved?limit=6");
         setLessons(data?.data || []);
       } catch (error) {
         console.error("Most saved lessons load error:", error);
@@ -55,7 +48,6 @@ const MostSavedLessonsSection = () => {
         setLoading(false);
       }
     };
-
     loadMostSaved();
   }, []);
 
@@ -71,17 +63,20 @@ const MostSavedLessonsSection = () => {
             Lessons
           </span>
         </h1>
-
         <p className="text-gray-500 mt-2">
           The lessons our community finds most worth keeping
         </p>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center min-h-[200px]">
-          Loading...
+      {/* inline loading */}
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
         </div>
-      ) : (
+      )}
+
+      {/* lessons */}
+      {!loading && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {lessons.map((lesson, i) => {
             const isLocked =
@@ -97,101 +92,55 @@ const MostSavedLessonsSection = () => {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
                 variants={cardVariants}
+                className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
               >
-                <div className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
-                  <img
-                    src={
-                      lesson.image ||
-                      "https://images.unsplash.com/photo-1517841905240-472988babdf9"
-                    }
-                    alt={lesson.title}
-                    className="h-48 w-full object-cover"
-                  />
-
-                  {isLocked && (
-                    <div className="absolute inset-0 z-20 bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
-                      <h3 className="font-bold text-white text-lg">
-                        🔒 Premium Lesson
-                      </h3>
-
-                      <p className="text-white text-sm mb-3">
-                        Upgrade to Premium
-                      </p>
-
-                      <Link href="/pricing">
-                        <Button>
-                          Upgrade Now
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-
-                  <div
-                    className={`p-4 ${
-                      isLocked
-                        ? "blur-sm select-none"
-                        : ""
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100">
-                        {lesson.category}
-                      </span>
-
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full ${
-                          lesson.accessLevel === "Premium"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {lesson.accessLevel}
-                      </span>
-                    </div>
-
-                    <h2 className="font-bold text-lg line-clamp-1">
-                      {lesson.title}
-                    </h2>
-
-                    <p className="text-sm text-gray-500 mt-2 line-clamp-3">
-                      {lesson.description}
-                    </p>
-
-                    <div className="space-y-1 text-sm text-gray-500 mt-3">
-                      <p>
-                        Tone: {lesson.emotionalTone}
-                      </p>
-
-                      <p>
-                        By:{" "}
-                        {lesson.creatorName ||
-                          "Unknown"}
-                      </p>
-
-                      <p>
-                        🔖{" "}
-                        {lesson.favoritesCount || 0}{" "}
-                        saves
-                      </p>
-
-                      <p>
-                        {new Date(
-                          lesson.createdAt
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
-
-                    <Link
-                      href={`/lessons/${lesson._id}`}
-                    >
-                      <Button
-                        className="w-full mt-3"
-                        disabled={isLocked}
-                      >
-                        See Details
-                      </Button>
+                {isLocked && (
+                  <div className="absolute inset-0 z-20 bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
+                    <h3 className="font-bold text-white text-lg">
+                      🔒 Premium Lesson
+                    </h3>
+                    <p className="text-white text-sm mb-3">Upgrade to Premium</p>
+                    <Link href="/pricing">
+                      <Button>Upgrade Now</Button>
                     </Link>
                   </div>
+                )}
+
+                <div className={`p-4 flex flex-col flex-1 ${isLocked ? "blur-sm select-none" : ""}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs px-2 py-1 rounded-full bg-gray-100">
+                      {lesson.category}
+                    </span>
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full ${lesson.accessLevel === "Premium"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                        }`}
+                    >
+                      {lesson.accessLevel}
+                    </span>
+                  </div>
+
+                  <h2 className="font-bold text-lg line-clamp-1">
+                    {lesson.title}
+                  </h2>
+
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-1">
+                    {lesson.description}
+                  </p>
+
+                  <div className="space-y-1 text-sm text-gray-500 mt-3">
+                    <p>Tone: {lesson.emotionalTone}</p>
+                    <p>By: {lesson.creatorName || "Unknown"}</p>
+                    <p>🔖 {lesson.favoritesCount || 0} saves</p>
+                    <p>{new Date(lesson.createdAt).toLocaleDateString()}</p>
+                  </div>
+
+                  <Link href={`/lessons/${lesson._id}`} className="mt-auto">
+                    <Button className="w-full mt-3" disabled={isLocked}>
+                      See Details
+                    </Button>
+                  </Link>
                 </div>
               </motion.div>
             );
