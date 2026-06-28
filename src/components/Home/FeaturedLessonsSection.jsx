@@ -21,7 +21,7 @@ const FeaturedLessonsSection = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // current user load — same pattern as LessonsPage
+  // current user load
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -34,7 +34,6 @@ const FeaturedLessonsSection = () => {
         console.error("User load error:", error);
       }
     };
-
     loadUser();
   }, []);
 
@@ -51,7 +50,6 @@ const FeaturedLessonsSection = () => {
         setLoading(false);
       }
     };
-
     loadFeatured();
   }, []);
 
@@ -61,21 +59,26 @@ const FeaturedLessonsSection = () => {
     <section className="max-w-7xl mx-auto px-4 py-10">
       {/* heading */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold">Featured <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#622ad8] to-[#a8258e]">
+        <h1 className="text-4xl font-bold">
+          Featured{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#622ad8] to-[#a8258e]">
             life lessons
           </span>
-
         </h1>
         <p className="text-gray-500 mt-2">
           A curated selection of lessons our team found especially worth reading.
         </p>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center min-h-[200px]">
-          Loading...
+      {/* inline loading */}
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
         </div>
-      ) : (
+      )}
+
+      {/* lessons */}
+      {!loading && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {lessons.map((lesson, i) => {
             const isLocked =
@@ -91,41 +94,31 @@ const FeaturedLessonsSection = () => {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
                 variants={cardVariants}
-                className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
+                className="relative border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
               >
-                <img
-                  src={
-                    lesson.image ||
-                    "https://images.unsplash.com/photo-1517841905240-472988babdf9"
-                  }
-                  alt={lesson.title}
-                  className="h-48 w-full object-cover"
-                />
-
                 {isLocked && (
                   <div className="absolute inset-0 z-20 bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
                     <h3 className="font-bold text-white text-lg">
                       🔒 Premium Lesson
                     </h3>
-                    <p className="text-white text-sm mb-3">
-                      Upgrade to Premium
-                    </p>
+                    <p className="text-white text-sm mb-3">Upgrade to Premium</p>
                     <Link href="/pricing">
                       <Button>Upgrade Now</Button>
                     </Link>
                   </div>
                 )}
 
-                <div className={`p-4 ${isLocked ? "blur-sm select-none" : ""}`}>
+                <div className={`p-4 flex flex-col flex-1 ${isLocked ? "blur-sm select-none" : ""}`}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs px-2 py-1 rounded-full">
                       {lesson.category}
                     </span>
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${lesson.accessLevel === "Premium"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-green-100 text-green-700"
-                        }`}
+                      className={`text-xs px-2 py-1 rounded-full ${
+                        lesson.accessLevel === "Premium"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
                     >
                       {lesson.accessLevel}
                     </span>
@@ -135,7 +128,7 @@ const FeaturedLessonsSection = () => {
                     {lesson.title}
                   </h2>
 
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-3">
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-1">
                     {lesson.description}
                   </p>
 
@@ -145,7 +138,7 @@ const FeaturedLessonsSection = () => {
                     <p>{new Date(lesson.createdAt).toLocaleDateString()}</p>
                   </div>
 
-                  <Link href={`/lessons/${lesson._id}`}>
+                  <Link href={`/lessons/${lesson._id}`} className="mt-auto">
                     <Button className="w-full mt-3" disabled={isLocked}>
                       See Details
                     </Button>

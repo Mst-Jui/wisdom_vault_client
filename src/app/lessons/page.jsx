@@ -195,7 +195,7 @@ const LessonsPage = () => {
                     {lesson.title}
                   </h2>
 
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-3">
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-1">
                     {lesson.description}
                   </p>
 
