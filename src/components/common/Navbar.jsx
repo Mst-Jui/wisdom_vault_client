@@ -58,14 +58,14 @@ const Navbar = () => {
 
           {/* Logo and Mobile Menu Toggle */}
           <div className="flex items-center gap-2">
-            <button className="md:hidden p-2 text-xl" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button className="md:hidden p-1.5 text-lg md:text-xl" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <RxHamburgerMenu />
             </button>
-            <Link href="/" className="inline-flex items-center gap-2">
-              <span className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0 bg-gradient-to-br from-[#622ad8] to-[#a8258e]`}>
+            <Link href="/" className="inline-flex items-center gap-1.5 md:gap-2">
+              <span className="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold text-sm md:text-base lg:text-lg shrink-0 bg-gradient-to-br from-[#622ad8] to-[#a8258e]">
                 W
               </span>
-              <span className="text-lg font-bold">Wisdom Vault</span>
+              <span className="text-base md:text-lg lg:text-xl font-bold">Wisdom Vault</span>
             </Link>
           </div>
 
@@ -76,7 +76,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <NavLink href="/lessons">Explore
+              <NavLink href="/lessons">Lessons
               </NavLink>
             </li>
 
@@ -304,7 +304,7 @@ const Navbar = () => {
 
               <li>
                 <NavLink href="/lessons" className="block py-2">
-                  Explore
+                  Lessons
                 </NavLink>
               </li>
 
