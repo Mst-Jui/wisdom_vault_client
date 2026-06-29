@@ -6,6 +6,7 @@ import { BiReset } from "react-icons/bi";
 import { authClient } from "@/lib/auth-client";
 import { serverFetch } from "@/lib/api/server";
 import Button from "@/components/reusable/Button";
+import Image from "next/image";
 
 const LessonsPage = () => {
   const [lessons, setLessons] = useState([]);
@@ -181,11 +182,10 @@ const LessonsPage = () => {
                       {lesson.category}
                     </span>
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        lesson.accessLevel === "Premium"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
+                      className={`text-xs px-2 py-1 rounded-full ${lesson.accessLevel === "Premium"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-green-100 text-green-700"
+                        }`}
                     >
                       {lesson.accessLevel}
                     </span>
@@ -201,7 +201,20 @@ const LessonsPage = () => {
 
                   <div className="space-y-1 text-sm text-gray-500 mt-3">
                     <p>Tone: {lesson.emotionalTone}</p>
-                    <p>By: {lesson.creatorName || "Unknown"}</p>
+                    {/* <p>By: {lesson.creatorName || "Unknown"}</p> */}
+                    <div className="flex items-center gap-2">
+                      {lesson.creatorImage && (
+                        <Image
+                          width={100}
+                          height={100}
+                          src={lesson.creatorImage}
+                          alt={lesson.creatorName}
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
+                      )}
+                      <p>{lesson.creatorName || "Unknown"}</p>
+                    </div>
+
                     <p>{new Date(lesson.createdAt).toLocaleDateString()}</p>
                   </div>
 
@@ -241,11 +254,10 @@ const LessonsPage = () => {
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`px-4 py-2 border rounded-lg transition ${
-                currentPage === page
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "hover:bg-gray-100"
-              }`}
+              className={`px-4 py-2 border rounded-lg transition ${currentPage === page
+                ? "bg-blue-500 text-white border-blue-500"
+                : "hover:bg-gray-100"
+                }`}
             >
               {page}
             </button>
