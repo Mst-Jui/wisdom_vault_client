@@ -19,7 +19,7 @@ export async function proxy(request) {
 
 export const config = {
    matcher: [
-      '/lessons/:path*',
+      '/lessons/:path',
       '/pricing',
       '/pricing/success',
       '/pricing/cancel',
